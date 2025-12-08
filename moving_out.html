@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Moving Out Sale 🎁</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #f7f5ff;
+      --card-bg: #ffffff;
+      --accent: #6a3fc6;
+      --accent-soft: #eae3f9;
+      --text-main: #222222;
+      --text-muted: #666666;
+      --danger: #e74c3c;
+      --sold-overlay: rgba(0, 0, 0, 0.4);
+      --radius-lg: 18px;
+      --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.08);
+      --highlight-bg: #fff9e9;
+      --highlight-border: #ffc857;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #f0ecff 0, #f7f5ff 40%, #ffffff 100%);
+      color: var(--text-main);
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* Floating background blobs */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.55;
+      z-index: -1;
+      animation: floatBg 14s ease-in-out infinite alternate;
+    }
+
+    body::before {
+      top: -120px;
+      left: -80px;
+      background: radial-gradient(circle, #eae3f9, #c7b3ff);
+    }
+
+    body::after {
+      bottom: -160px;
+      right: -60px;
+      background: radial-gradient(circle, #ffe5f2, #ffd3b3);
+      animation-delay: 3s;
+    }
+
+    @keyframes floatBg {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(0, -12px, 0) scale(1.03);
+      }
+      100% {
+        transform: translate3d(0, 8px, 0) scale(1.01);
+      }
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto 40px;
+      position: relative;
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    header h1 span.badge {
+      font-size: 0.8rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    header p {
+      color: var(--text-muted);
+      max-width: 700px;
+      line-height: 1.4;
+    }
+
+    .hero-context {
+      margin-top: 6px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--highlight-border);
+      background: var(--highlight-bg);
+      font-size: 0.9rem;
+      line-height: 1.4;
+      display: grid;
+      gap: 4px;
+    }
+
+    .hero-context span.label {
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.72rem;
+    }
+
+    .hero-context ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .hero-context li::before {
+      content: "•";
+      margin-right: 6px;
+      color: var(--accent);
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+      align-items: center;
+      justify-content: flex-start;
+      animation: fadeInUp 0.7s ease-out forwards;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      font-size: 0.85rem;
+      background: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease-out;
+      transform: translateY(0);
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .chip.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 6px 14px rgba(106, 63, 198, 0.3);
+    }
+
+    .chip span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: currentColor;
+      display: inline-block;
+    }
+
+    .stats-bar {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .stats-bar span strong {
+      color: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fadeInUp 0.45s ease-out forwards;
+    }
+
+    /* Stagger the cards a bit */
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.08s; }
+    .card:nth-child(3) { animation-delay: 0.11s; }
+    .card:nth-child(4) { animation-delay: 0.14s; }
+    .card:nth-child(5) { animation-delay: 0.17s; }
+    .card:nth-child(6) { animation-delay: 0.20s; }
+
+    .card:hover {
+      transform: translateY(-4px) rotate(-0.2deg);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .card-image-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 68%;
+      overflow: hidden;
+      background: linear-gradient(145deg, #f5f2ff, #f9fbff);
+    }
+
+    .carousel {
+      position: absolute;
+      inset: 0;
+    }
+
+    .carousel-image {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .carousel-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.01);
+      transition: transform 0.6s ease-out;
+    }
+
+    .card:hover .carousel-image img {
+      transform: scale(1.04);
+    }
+
+    .carousel-image.active {
+      opacity: 1;
+    }
+
+    .carousel-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background: #f3f0ff;
+    }
+
+    .carousel button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.45);
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      padding: 4px 10px;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 999px;
+      opacity: 0;
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    }
+
+    .card-image-wrapper:hover .carousel button {
+      opacity: 1;
+      transform: translateY(-50%) scale(1.02);
+    }
+
+    .carousel-prev { left: 8px; }
+    .carousel-next { right: 8px; }
+
+    .status-pill {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: rgba(0, 0, 0, 0.72);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 15;
+      backdrop-filter: blur(4px);
+    }
+
+    .status-pill .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #2ecc71;
+    }
+
+    .status-pill.sold {
+      background: rgba(0, 0, 0, 0.82);
+    }
+
+    .status-pill.sold .dot {
+      background: #e74c3c;
+    }
+
+    .sold-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--sold-overlay);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      z-index: 12;
+    }
+
+    .card-body {
+      padding: 12px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .price {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .category {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      max-height: 3.1em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .location {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .location::before {
+      content: "📍";
+    }
+
+    .contact-btn {
+      border: none;
+      background: rgba(106, 63, 198, 0.06);
+      color: var(--accent);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      transition: background 0.15s ease-out, transform 0.1s ease-out,
+        box-shadow 0.15s ease-out;
+    }
+
+    .contact-btn:hover {
+      background: rgba(106, 63, 198, 0.14);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(106, 63, 198, 0.18);
+    }
+
+    .contact-btn:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      animation: fadeInUp 0.4s ease-out forwards;
+    }
+
+    .empty-state strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--accent);
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.6rem;
+      }
+
+      .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero-context {
+        font-size: 0.86rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>
+        Moving Out Sale
+        <span class="badge">Moving abroad ✈️</span>
+      </h1>
+      <p>
+        I’m decluttering my life before moving abroad. Browse through the stuff below –
+        everything is first-come-first-serve. Once something is marked
+        <strong>Sold</strong>, it’s gone. 😄
+      </p>
+
+      <div class="hero-context">
+        <span class="label">Quick info</span>
+        <ul>
+          <li>I’m moving abroad, so everything is priced very reasonably.</li>
+          <li>There are a few free giveaway items too – grab them before they vanish.</li>
+          <li>Extra discounts if you pick multiple items together.</li>
+          <li>Most items are in good / new / mint condition.</li>
+        </ul>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <div class="filter-buttons">
+        <button class="chip active" data-filter="available">
+          <span class="dot"></span> Available
+        </button>
+        <button class="chip" data-filter="all">
+          <span class="dot"></span> All
+        </button>
+        <button class="chip" data-filter="sold">
+          <span class="dot"></span> Sold
+        </button>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <span id="statsSummary"></span>
+      <span id="statsFilterInfo"></span>
+    </div>
+
+    <div id="grid" class="grid"></div>
+
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <strong>No items here right now.</strong>
+      Ping me if you think something’s missing.
+    </div>
+  </div>
+
+  <!-- CSV parser -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script>
+    // === CONFIG: your Sheet & WhatsApp ===
+    const SHEET_ID = "1-Rw7PvtRp5t7QPqWOA3bGJYqSJE7s3biZaLsOtCfoM8";
+    const SHEET_GID = "0"; // first tab
+
+    const SHEET_CSV_URL =
+      "https://docs.google.com/spreadsheets/d/" +
+      SHEET_ID +
+      "/export?format=csv&gid=" +
+      SHEET_GID;
+
+    // put your WhatsApp number like "91XXXXXXXXXX" (no +) or leave blank
+    const WHATSAPP_NUMBER = "918437928779";
+
+    // === State ===
+    let allItems = [];
+    let filteredItems = [];
+    let currentFilter = "available";
+    let currentSearch = ""; // kept for logic, but no UI search
+
+    // === Helpers ===
+    function escapeHtml(str) {
+      return str
+        .toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function normalizeImageUrls(raw) {
+      if (!raw) return [];
+      return raw
+        .split(",")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0)
+        .map(convertToDirectUrl);
+    }
+
+    function convertToDirectUrl(url) {
+      if (!url) return "";
+
+      // already direct or non-Google → return as is
+      if (url.includes("lh3.googleusercontent.com") || !url.includes("drive.google.com")) {
+        return url;
+      }
+
+      let fileId = "";
+
+      // pattern: /file/d/FILE_ID/
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        fileId = match[1];
+      } else {
+        try {
+          const u = new URL(url);
+          const idParam = u.searchParams.get("id");
+          if (idParam) fileId = idParam;
+        } catch (e) {
+          return url;
+        }
+      }
+
+      if (!fileId) return url;
+
+      return `https://lh3.googleusercontent.com/d/${fileId}`;
+    }
+
+    // === Fetch & parse Google Sheet CSV ===
+    async function loadItems() {
+      try {
+        const res = await fetch(SHEET_CSV_URL);
+        const text = await res.text();
+
+        const parsed = Papa.parse(text, {
+          header: true,
+          skipEmptyLines: true,
+        });
+
+        allItems = parsed.data
+          .map((row) => {
+            const imagesRaw = row["Images"] || row["ImageURL"] || "";
+
+            return {
+              name: row["Name"] || "",
+              price: row["Price"] || "",
+              status: (row["Status"] || "").toString().trim(),
+              imageUrls: normalizeImageUrls(imagesRaw),
+              category: row["Category"] || "",
+              description: row["Description"] || "",
+              location: row["Location"] || "",
+            };
+          })
+          .filter((item) => item.name !== "");
+
+        applyFilters();
+      } catch (err) {
+        console.error("Error loading sheet:", err);
+        const empty = document.getElementById("emptyState");
+        empty.style.display = "block";
+        empty.innerHTML =
+          "<strong>Couldn’t load items.</strong> There was an error reading the sheet.";
+      }
+    }
+
+    // === Filtering logic ===
+    function applyFilters() {
+      filteredItems = allItems.filter((item) => {
+        const matchesFilter =
+          currentFilter === "all"
+            ? true
+            : currentFilter === "available"
+            ? !/sold/i.test(item.status)
+            : /sold/i.test(item.status);
+
+        const search = currentSearch.toLowerCase(); // always empty right now
+        const matchesSearch =
+          !search ||
+          item.name.toLowerCase().includes(search) ||
+          (item.category || "").toLowerCase().includes(search) ||
+          (item.description || "").toLowerCase().includes(search);
+
+        return matchesFilter && matchesSearch;
+      });
+
+      renderItems();
+      updateStats();
+    }
+
+    // === Render cards ===
+    function renderItems() {
+      const grid = document.getElementById("grid");
+      const emptyState = document.getElementById("emptyState");
+
+      grid.innerHTML = "";
+
+      if (filteredItems.length === 0) {
+        emptyState.style.display = "block";
+        return;
+      } else {
+        emptyState.style.display = "none";
+      }
+
+      filteredItems.forEach((item, idx) => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const isSold = /sold/i.test(item.status);
+
+        const imagesHtml =
+          item.imageUrls && item.imageUrls.length
+            ? item.imageUrls
+                .map(
+                  (url, imgIndex) => `
+          <div class="carousel-image ${imgIndex === 0 ? "active" : ""}">
+            <img src="${url}" alt="${escapeHtml(item.name)}" onerror="this.style.display='none';" />
+          </div>
+        `
+                )
+                .join("")
+            : `<div class="carousel-placeholder">No image</div>`;
+
+        card.innerHTML = `
+          <div class="card-image-wrapper">
+            <div class="carousel" data-active-index="0">
+              ${imagesHtml}
+              ${
+                item.imageUrls.length > 1
+                  ? `
+                <button class="carousel-prev">‹</button>
+                <button class="carousel-next">›</button>
+              `
+                  : ""
+              }
+            </div>
+            <div class="status-pill ${isSold ? "sold" : ""}">
+              <span class="dot"></span>
+              ${isSold ? "Sold" : "Available"}
+            </div>
+            ${
+              isSold
+                ? `<div class="sold-overlay">SOLD ✌️</div>`
+                : ""
+            }
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <div>
+                <div class="card-title">${escapeHtml(item.name)}</div>
+                ${
+                  item.category
+                    ? `<div class="category">${escapeHtml(item.category)}</div>`
+                    : ""
+                }
+              </div>
+              ${
+                item.price
+                  ? `<div class="price">${escapeHtml(item.price.toString())}</div>`
+                  : ""
+              }
+            </div>
+            ${
+              item.description
+                ? `<div class="desc">${escapeHtml(item.description)}</div>`
+                : ""
+            }
+            <div class="meta-row">
+              ${
+                item.location
+                  ? `<div class="location">${escapeHtml(item.location)}</div>`
+                  : `<span></span>`
+              }
+              <button class="contact-btn" data-index="${idx}">
+                💬 I'm interested
+              </button>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      document.querySelectorAll(".contact-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const idx = parseInt(btn.getAttribute("data-index"), 10);
+          const item = filteredItems[idx];
+          openWhatsAppForItem(item);
+        });
+      });
+
+      initCarousels();
+    }
+
+    // === Carousel ===
+    function initCarousels() {
+      document.querySelectorAll(".carousel").forEach((carousel) => {
+        const images = Array.from(carousel.querySelectorAll(".carousel-image"));
+        if (!images.length) return;
+
+        let activeIndex = 0;
+
+        const update = () => {
+          images.forEach((img, i) => img.classList.toggle("active", i === activeIndex));
+          carousel.dataset.activeIndex = activeIndex;
+        };
+
+        const prev = carousel.querySelector(".carousel-prev");
+        const next = carousel.querySelector(".carousel-next");
+
+        if (prev) {
+          prev.onclick = (e) => {
+            e.stopPropagation();
+            activeIndex = (activeIndex - 1 + images.length) % images.length;
+            update();
+          };
+        }
+
+        if (next) {
+          next.onclick = (e) => {
+            e.stopPropagation();
+            activeIndex = (activeIndex + 1) % images.length;
+            update();
+          };
+        }
+
+        update();
+      });
+    }
+
+    // === Stats ===
+    function updateStats() {
+      const total = allItems.length;
+      const availableCount = allItems.filter((i) => !/sold/i.test(i.status)).length;
+      const soldCount = total - availableCount;
+
+      const statsSummary = document.getElementById("statsSummary");
+      statsSummary.innerHTML = `
+        <strong>${availableCount}</strong> available ·
+        <strong>${soldCount}</strong> sold ·
+        <strong>${total}</strong> total items
+      `;
+
+      const statsFilterInfo = document.getElementById("statsFilterInfo");
+      const activeFilterLabel =
+        currentFilter === "available"
+          ? "Showing available items"
+          : currentFilter === "sold"
+          ? "Showing sold items"
+          : "Showing everything";
+
+      // search text is always empty now
+      const searchInfo = "";
+
+      statsFilterInfo.textContent = activeFilterLabel + searchInfo;
+    }
+
+    // === Interactions ===
+    document.querySelectorAll(".chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document
+          .querySelectorAll(".chip")
+          .forEach((c) => c.classList.remove("active"));
+        chip.classList.add("active");
+        currentFilter = chip.getAttribute("data-filter");
+        applyFilters();
+      });
+    });
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(console.error);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+    }
+
+    function openWhatsAppForItem(item) {
+      const baseText =
+        "Hey! I'm interested in this item from your moving out sale:\n\n" +
+        `• ${item.name}` +
+        (item.price ? `\n• Price: ${item.price}` : "") +
+        (item.location ? `\n• Location: ${item.location}` : "") +
+        "\n\nIs it still available?";
+      const encoded = encodeURIComponent(baseText);
+
+      if (WHATSAPP_NUMBER) {
+        const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+        window.open(url, "_blank");
+      } else {
+        copyToClipboard(baseText);
+        alert(
+          "Message copied! Paste it into WhatsApp and send it to me manually."
+        );
+      }
+    }
+
+    // === Init ===
+    loadItems();
+  </script>
+</body>
+</html>
