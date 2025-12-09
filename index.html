@@ -355,6 +355,27 @@
       background: #e74c3c;
     }
 
+    /* Multi-photo indicator */
+    .photo-count-pill {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      z-index: 14;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .photo-count-pill::before {
+      content: "📷";
+      font-size: 0.8rem;
+    }
+
     .sold-overlay {
       position: absolute;
       inset: 0;
@@ -391,9 +412,23 @@
     }
 
     .price {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      font-size: 0.9rem;
+    }
+
+    .current-price {
       font-weight: 700;
       font-size: 0.95rem;
       color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .original-price {
+      text-decoration: line-through;
+      font-size: 0.78rem;
+      color: var(--text-muted);
       white-space: nowrap;
     }
 
@@ -411,6 +446,25 @@
       max-height: 3.1em;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .product-link {
+      font-size: 0.8rem;
+      color: var(--accent);
+      text-decoration: none;
+      margin-top: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .product-link::after {
+      content: "↗";
+      font-size: 0.75rem;
+    }
+
+    .product-link:hover {
+      text-decoration: underline;
     }
 
     .meta-row {
@@ -485,6 +539,12 @@
 
       .hero-context {
         font-size: 0.86rem;
+      }
+
+      /* Always show carousel buttons on mobile */
+      .card-image-wrapper .carousel button {
+        opacity: 1;
+        transform: translateY(-50%);
       }
     }
   </style>
@@ -633,6 +693,8 @@
               category: row["Category"] || "",
               description: row["Description"] || "",
               location: row["Location"] || "",
+              link: row["Link"] || "",
+              originalPrice: row["Original Price"] || row["OriginalPrice"] || ""
             };
           })
           .filter((item) => item.name !== "");
@@ -722,6 +784,11 @@
               ${isSold ? "Sold" : "Available"}
             </div>
             ${
+              item.imageUrls.length > 1
+                ? `<div class="photo-count-pill">${item.imageUrls.length} photos</div>`
+                : ""
+            }
+            ${
               isSold
                 ? `<div class="sold-overlay">SOLD ✌️</div>`
                 : ""
@@ -738,14 +805,30 @@
                 }
               </div>
               ${
-                item.price
-                  ? `<div class="price">${escapeHtml(item.price.toString())}</div>`
+                item.price || item.originalPrice
+                  ? `<div class="price">
+                      ${
+                        item.originalPrice
+                          ? `<div class="original-price">${escapeHtml(item.originalPrice.toString())}</div>`
+                          : ""
+                      }
+                      ${
+                        item.price
+                          ? `<div class="current-price">${escapeHtml(item.price.toString())}</div>`
+                          : ""
+                      }
+                    </div>`
                   : ""
               }
             </div>
             ${
               item.description
                 ? `<div class="desc">${escapeHtml(item.description)}</div>`
+                : ""
+            }
+            ${
+              item.link
+                ? `<a class="product-link" href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer">View product</a>`
                 : ""
             }
             <div class="meta-row">
@@ -832,7 +915,6 @@
           ? "Showing sold items"
           : "Showing everything";
 
-      // search text is always empty now
       const searchInfo = "";
 
       statsFilterInfo.textContent = activeFilterLabel + searchInfo;
@@ -868,7 +950,9 @@
         "Hey! I'm interested in this item from your moving out sale:\n\n" +
         `• ${item.name}` +
         (item.price ? `\n• Price: ${item.price}` : "") +
+        (item.originalPrice ? `\n• Original price: ${item.originalPrice}` : "") +
         (item.location ? `\n• Location: ${item.location}` : "") +
+        (item.link ? `\n• Link: ${item.link}` : "") +
         "\n\nIs it still available?";
       const encoded = encodeURIComponent(baseText);
 
