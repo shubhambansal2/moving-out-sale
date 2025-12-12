@@ -113,67 +113,29 @@
       line-height: 1.4;
     }
 
-    .hero-context {
-      margin-top: 6px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid var(--highlight-border);
-      background: var(--highlight-bg);
-      font-size: 0.9rem;
-      line-height: 1.4;
-      display: grid;
-      gap: 4px;
-    }
-
-    .hero-context span.label {
-      font-weight: 600;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-size: 0.72rem;
-    }
-
-    .hero-context ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .hero-context li::before {
-      content: "•";
-      margin-right: 6px;
-      color: var(--accent);
-    }
-
-    .hero-perks {
-      margin-top: 18px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
-    }
-
-    .hero-perk {
-      padding: 14px 16px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.6);
-      border: 1px solid rgba(106, 63, 198, 0.12);
-      box-shadow: 0 12px 25px rgba(106, 63, 198, 0.08);
+    .whatsapp-pin {
+      position: fixed;
+      top: 22px;
+      right: 24px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(130deg, #25d366, #1ebe5d);
+      color: #fff;
+      font-size: 1.15rem;
+      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+      cursor: pointer;
       display: flex;
-      flex-direction: column;
-      gap: 6px;
+      align-items: center;
+      justify-content: center;
+      z-index: 60;
+      transition: transform 0.15s ease-out, box-shadow 0.2s ease-out;
     }
 
-    .hero-perk span.icon {
-      font-size: 1rem;
-    }
-
-    .hero-perk strong {
-      font-size: 0.95rem;
-    }
-
-    .hero-perk p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      line-height: 1.3;
+    .whatsapp-pin:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 30px rgba(37, 211, 102, 0.5);
     }
 
     .toolbar {
@@ -776,77 +738,6 @@
       color: var(--accent);
     }
 
-    .floating-cta {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: linear-gradient(130deg, #6a3fc6, #ff7ca8);
-      color: #fff;
-      padding: 18px 22px;
-      border-radius: 22px;
-      box-shadow: 0 20px 45px rgba(106, 63, 198, 0.35);
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      max-width: 340px;
-      z-index: 50;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-    .floating-cta.hidden {
-      opacity: 0;
-      transform: translateY(30px);
-      pointer-events: none;
-    }
-
-    .floating-cta .cta-copy {
-      flex: 1;
-    }
-
-    .floating-cta .cta-copy span {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      opacity: 0.8;
-    }
-
-    .floating-cta .cta-copy strong {
-      display: block;
-      margin-top: 4px;
-      font-size: 0.95rem;
-    }
-
-    .floating-cta button {
-      border: none;
-      background: #fff;
-      color: #6a3fc6;
-      padding: 10px 16px;
-      border-radius: 999px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 8px 18px rgba(255, 255, 255, 0.25);
-      transition: transform 0.2s ease;
-    }
-
-    .floating-cta button:hover {
-      transform: translateY(-1px);
-    }
-
-    .floating-cta .cta-close {
-      background: transparent;
-      color: rgba(255, 255, 255, 0.8);
-      padding: 0;
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      border-radius: 50%;
-      box-shadow: none;
-    }
-
     @media (max-width: 600px) {
       header h1 {
         font-size: 1.6rem;
@@ -855,10 +746,6 @@
       .toolbar {
         flex-direction: column;
         align-items: flex-start;
-      }
-
-      .hero-context {
-        font-size: 0.86rem;
       }
 
       /* Always show carousel buttons on mobile */
@@ -871,18 +758,11 @@
         padding: 22px;
       }
 
-      .floating-cta {
-        left: 20px;
-        right: 20px;
-        bottom: 20px;
-        gap: 12px;
-        flex-direction: column;
-        text-align: center;
-      }
     }
   </style>
 </head>
 <body>
+  <button class="whatsapp-pin" id="whatsappPin" aria-label="Chat on WhatsApp">💬</button>
   <div class="container">
     <header>
       <h1>
@@ -895,33 +775,6 @@
         <strong>Sold</strong>, it’s gone. 😄
       </p>
 
-      <div class="hero-context">
-        <span class="label">Quick info</span>
-        <ul>
-          <li>I’m moving abroad, so everything is priced very reasonably.</li>
-          <li>There are a few free giveaway items too – grab them before they vanish.</li>
-          <li>Extra discounts if you pick multiple items together.</li>
-          <li>Most items are in good / new / mint condition.</li>
-        </ul>
-      </div>
-
-      <div class="hero-perks">
-        <div class="hero-perk">
-          <span class="icon">⚡</span>
-          <strong>Fresh drops every week</strong>
-          <p>Listings are updated as soon as something sells, so you always see what’s truly available.</p>
-        </div>
-        <div class="hero-perk">
-          <span class="icon">💸</span>
-          <strong>Bundle & save extra</strong>
-          <p>Pick any 2+ items and ping me – I’ll slash prices instantly for serious buyers.</p>
-        </div>
-        <div class="hero-perk">
-          <span class="icon">🤝</span>
-          <strong>Instant WhatsApp hold</strong>
-          <p>Message me and I’ll reserve items for you while you arrange pickup or payment.</p>
-        </div>
-      </div>
     </header>
 
     <div class="toolbar">
@@ -950,15 +803,6 @@
       <strong>No items here right now.</strong>
       Ping me if you think something’s missing.
     </div>
-  </div>
-
-  <div class="floating-cta" id="floatingCta">
-    <div class="cta-copy">
-      <span>Ready to bundle?</span>
-      <strong>WhatsApp me for exclusive multi-item pricing.</strong>
-    </div>
-    <button id="floatingCtaBtn">Chat now</button>
-    <button class="cta-close" id="floatingCtaClose" aria-label="Dismiss bundle reminder">×</button>
   </div>
 
   <!-- CSV parser -->
@@ -1458,39 +1302,10 @@
       });
     });
 
-    const floatingCta = document.getElementById("floatingCta");
-    const floatingCtaBtn = document.getElementById("floatingCtaBtn");
-    const floatingCtaClose = document.getElementById("floatingCtaClose");
-    let ctaClosed = false;
-    let ctaShown = false;
-
-    const revealCta = () => {
-      if (!floatingCta || ctaShown || ctaClosed) return;
-      floatingCta.classList.remove("hidden");
-      ctaShown = true;
-    };
-
-    if (floatingCta) {
-      floatingCta.classList.add("hidden");
-      setTimeout(revealCta, 1200);
-      window.addEventListener("scroll", () => {
-        if (window.scrollY > 200) {
-          revealCta();
-        }
-      });
-    }
-
-    if (floatingCtaBtn) {
-      floatingCtaBtn.addEventListener("click", () => {
+    const whatsappPin = document.getElementById("whatsappPin");
+    if (whatsappPin) {
+      whatsappPin.addEventListener("click", () => {
         openWhatsAppWithText(CTA_MESSAGE);
-      });
-    }
-
-    if (floatingCtaClose) {
-      floatingCtaClose.addEventListener("click", (event) => {
-        event.stopPropagation();
-        floatingCta?.classList.add("hidden");
-        ctaClosed = true;
       });
     }
 
