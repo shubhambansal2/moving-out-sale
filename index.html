@@ -144,6 +144,38 @@
       color: var(--accent);
     }
 
+    .hero-perks {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .hero-perk {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(106, 63, 198, 0.12);
+      box-shadow: 0 12px 25px rgba(106, 63, 198, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .hero-perk span.icon {
+      font-size: 1rem;
+    }
+
+    .hero-perk strong {
+      font-size: 0.95rem;
+    }
+
+    .hero-perk p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
     .toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -152,6 +184,26 @@
       align-items: center;
       justify-content: flex-start;
       animation: fadeInUp 0.7s ease-out forwards;
+    }
+
+    .category-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .category-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .category-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .filter-buttons {
@@ -227,17 +279,81 @@
     }
 
     .card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
       position: relative;
-      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+      border-radius: var(--radius-lg);
       opacity: 0;
       transform: translateY(8px);
       animation: fadeInUp 0.45s ease-out forwards;
+      cursor: pointer;
+      perspective: 1400px;
+      transition: transform 0.12s ease-out;
+      min-height: 360px;
+      display: block;
+    }
+
+    .card-front,
+    .card-back {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1),
+        box-shadow 0.35s ease, opacity 0.35s ease;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      width: 100%;
+    }
+
+    .card-front {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      min-height: 100%;
+    }
+
+    .card-back {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, #7c4cf1, #5425a5 55%, #331362 100%);
+      color: #fff;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transform: rotateY(-180deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .card.card-live::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: calc(var(--radius-lg) + 2px);
+      background: linear-gradient(120deg, rgba(106, 63, 198, 0.4), rgba(255, 144, 104, 0.5));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card.card-live:hover::after,
+    .card.card-live.flipped::after {
+      opacity: 1;
+    }
+
+    .card.card-sold::after {
+      display: none;
+    }
+
+    .card.flipped .card-front {
+      transform: rotateY(180deg);
+      opacity: 0;
+    }
+
+    .card.flipped .card-back {
+      transform: rotateY(0deg);
+      opacity: 1;
+      pointer-events: auto;
+      box-shadow: 0 20px 45px rgba(43, 21, 80, 0.45);
     }
 
     /* Stagger the cards a bit */
@@ -250,7 +366,105 @@
 
     .card:hover {
       transform: translateY(-4px) rotate(-0.2deg);
+    }
+
+    .card:hover .card-front {
       box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .card.flipped .card-front,
+    .card.flipped:hover .card-front {
+      box-shadow: none;
+    }
+
+    .card-back h3 {
+      font-size: 1.15rem;
+    }
+
+    .flip-badge {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .back-desc {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .back-facts {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .back-facts li {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      font-size: 0.85rem;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.18);
+      padding-bottom: 8px;
+    }
+
+    .back-facts li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .back-facts span {
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.68rem;
+    }
+
+    .back-facts strong {
+      color: #fff;
+      font-size: 0.95rem;
+    }
+
+    .back-cta {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .whatsapp-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      background: #00d46a;
+      color: #102417;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: transform 0.12s ease-out, box-shadow 0.2s ease-out;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .whatsapp-btn::before {
+      content: "💬";
+    }
+
+    .whatsapp-btn:hover {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    .flip-note {
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
     }
 
     .card-image-wrapper {
@@ -338,6 +552,8 @@
       gap: 5px;
       z-index: 15;
       backdrop-filter: blur(4px);
+      flex-wrap: wrap;
+      line-height: 1.2;
     }
 
     .status-pill .dot {
@@ -345,6 +561,15 @@
       height: 7px;
       border-radius: 999px;
       background: #2ecc71;
+    }
+
+    .status-available-date {
+      font-size: 0.63rem;
+      color: #ffe8b6;
+      width: 100%;
+      margin-left: 12px;
+      text-transform: none;
+      letter-spacing: 0;
     }
 
     .status-pill.sold {
@@ -448,6 +673,13 @@
       text-overflow: ellipsis;
     }
 
+    .availability {
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
     .product-link {
       font-size: 0.8rem;
       color: var(--accent);
@@ -465,6 +697,23 @@
 
     .product-link:hover {
       text-decoration: underline;
+    }
+
+    .flip-hint {
+      margin-top: 10px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .flip-hint::before {
+      content: "↺";
+      font-size: 0.9rem;
+      color: var(--accent);
     }
 
     .meta-row {
@@ -527,6 +776,77 @@
       color: var(--accent);
     }
 
+    .floating-cta {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(130deg, #6a3fc6, #ff7ca8);
+      color: #fff;
+      padding: 18px 22px;
+      border-radius: 22px;
+      box-shadow: 0 20px 45px rgba(106, 63, 198, 0.35);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      max-width: 340px;
+      z-index: 50;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .floating-cta.hidden {
+      opacity: 0;
+      transform: translateY(30px);
+      pointer-events: none;
+    }
+
+    .floating-cta .cta-copy {
+      flex: 1;
+    }
+
+    .floating-cta .cta-copy span {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.8;
+    }
+
+    .floating-cta .cta-copy strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.95rem;
+    }
+
+    .floating-cta button {
+      border: none;
+      background: #fff;
+      color: #6a3fc6;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(255, 255, 255, 0.25);
+      transition: transform 0.2s ease;
+    }
+
+    .floating-cta button:hover {
+      transform: translateY(-1px);
+    }
+
+    .floating-cta .cta-close {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.8);
+      padding: 0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      box-shadow: none;
+    }
+
     @media (max-width: 600px) {
       header h1 {
         font-size: 1.6rem;
@@ -545,6 +865,19 @@
       .card-image-wrapper .carousel button {
         opacity: 1;
         transform: translateY(-50%);
+      }
+
+      .card-back {
+        padding: 22px;
+      }
+
+      .floating-cta {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+        gap: 12px;
+        flex-direction: column;
+        text-align: center;
       }
     }
   </style>
@@ -571,9 +904,28 @@
           <li>Most items are in good / new / mint condition.</li>
         </ul>
       </div>
+
+      <div class="hero-perks">
+        <div class="hero-perk">
+          <span class="icon">⚡</span>
+          <strong>Fresh drops every week</strong>
+          <p>Listings are updated as soon as something sells, so you always see what’s truly available.</p>
+        </div>
+        <div class="hero-perk">
+          <span class="icon">💸</span>
+          <strong>Bundle & save extra</strong>
+          <p>Pick any 2+ items and ping me – I’ll slash prices instantly for serious buyers.</p>
+        </div>
+        <div class="hero-perk">
+          <span class="icon">🤝</span>
+          <strong>Instant WhatsApp hold</strong>
+          <p>Message me and I’ll reserve items for you while you arrange pickup or payment.</p>
+        </div>
+      </div>
     </header>
 
     <div class="toolbar">
+      <div id="categoryFilter" class="category-filter"></div>
       <div class="filter-buttons">
         <button class="chip active" data-filter="available">
           <span class="dot"></span> Available
@@ -600,6 +952,15 @@
     </div>
   </div>
 
+  <div class="floating-cta" id="floatingCta">
+    <div class="cta-copy">
+      <span>Ready to bundle?</span>
+      <strong>WhatsApp me for exclusive multi-item pricing.</strong>
+    </div>
+    <button id="floatingCtaBtn">Chat now</button>
+    <button class="cta-close" id="floatingCtaClose" aria-label="Dismiss bundle reminder">×</button>
+  </div>
+
   <!-- CSV parser -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
@@ -615,12 +976,17 @@
 
     // put your WhatsApp number like "91XXXXXXXXXX" (no +) or leave blank
     const WHATSAPP_NUMBER = "918437928779";
+    const CTA_MESSAGE =
+      "Hey! I'd like to bundle a few things from your moving out sale. Could you share multi-item pricing and next steps?";
 
     // === State ===
     let allItems = [];
     let filteredItems = [];
     let currentFilter = "available";
     let currentSearch = ""; // kept for logic, but no UI search
+    const CATEGORY_ALL_VALUE = "all";
+    let currentCategory = CATEGORY_ALL_VALUE;
+    let categoryDisplayMap = new Map();
 
     // === Helpers ===
     function escapeHtml(str) {
@@ -670,6 +1036,75 @@
       return `https://lh3.googleusercontent.com/d/${fileId}`;
     }
 
+    function normalizeCategoryValue(value) {
+      return value ? value.toString().trim().toLowerCase() : "";
+    }
+
+    function getUniqueCategories() {
+      const seen = new Set();
+      const categories = [];
+
+      allItems.forEach((item) => {
+        const label = (item.category || "").trim();
+        const normalized = normalizeCategoryValue(label);
+        if (!label || !normalized || seen.has(normalized)) return;
+        seen.add(normalized);
+        categories.push({ label, value: normalized });
+      });
+
+      return categories.sort((a, b) => a.label.localeCompare(b.label));
+    }
+
+    function renderCategoryFilter() {
+      const wrapper = document.getElementById("categoryFilter");
+      if (!wrapper) return;
+
+      const uniqueCategories = getUniqueCategories();
+      if (!uniqueCategories.length) {
+        categoryDisplayMap = new Map([[CATEGORY_ALL_VALUE, "All categories"]]);
+        wrapper.innerHTML = "";
+        return;
+      }
+
+      const options = [
+        { label: "All", value: CATEGORY_ALL_VALUE },
+        ...uniqueCategories,
+      ];
+
+      categoryDisplayMap = new Map(
+        options.map((opt) => [
+          opt.value,
+          opt.value === CATEGORY_ALL_VALUE ? "All categories" : opt.label,
+        ])
+      );
+
+      wrapper.innerHTML = `
+        <span class="category-label">Category</span>
+        <div class="category-chips">
+          ${options
+            .map(
+              (opt) => `
+                <button
+                  class="chip ${currentCategory === opt.value ? "active" : ""}"
+                  data-category="${escapeHtml(opt.value)}"
+                >
+                  ${escapeHtml(opt.label)}
+                </button>
+              `
+            )
+            .join("")}
+        </div>
+      `;
+
+      wrapper.querySelectorAll('.chip[data-category]').forEach((chip) => {
+        chip.addEventListener("click", () => {
+          currentCategory = chip.getAttribute("data-category") || CATEGORY_ALL_VALUE;
+          renderCategoryFilter();
+          applyFilters();
+        });
+      });
+    }
+
     // === Fetch & parse Google Sheet CSV ===
     async function loadItems() {
       try {
@@ -694,11 +1129,13 @@
               description: row["Description"] || "",
               location: row["Location"] || "",
               link: row["Link"] || "",
-              originalPrice: row["Original Price"] || row["OriginalPrice"] || ""
+              originalPrice: row["Original Price"] || row["OriginalPrice"] || "",
+              availableDate: row["Available Date"] || row["AvailableDate"] || ""
             };
           })
           .filter((item) => item.name !== "");
 
+        renderCategoryFilter();
         applyFilters();
       } catch (err) {
         console.error("Error loading sheet:", err);
@@ -726,7 +1163,12 @@
           (item.category || "").toLowerCase().includes(search) ||
           (item.description || "").toLowerCase().includes(search);
 
-        return matchesFilter && matchesSearch;
+        const matchesCategory =
+          currentCategory === CATEGORY_ALL_VALUE
+            ? true
+            : normalizeCategoryValue(item.category) === currentCategory;
+
+        return matchesFilter && matchesSearch && matchesCategory;
       });
 
       renderItems();
@@ -752,6 +1194,7 @@
         card.className = "card";
 
         const isSold = /sold/i.test(item.status);
+        card.classList.add(isSold ? "card-sold" : "card-live");
 
         const imagesHtml =
           item.imageUrls && item.imageUrls.length
@@ -766,93 +1209,172 @@
                 .join("")
             : `<div class="carousel-placeholder">No image</div>`;
 
-        card.innerHTML = `
-          <div class="card-image-wrapper">
-            <div class="carousel" data-active-index="0">
-              ${imagesHtml}
-              ${
-                item.imageUrls.length > 1
-                  ? `
-                <button class="carousel-prev">‹</button>
-                <button class="carousel-next">›</button>
-              `
-                  : ""
-              }
-            </div>
-            <div class="status-pill ${isSold ? "sold" : ""}">
-              <span class="dot"></span>
-              ${isSold ? "Sold" : "Available"}
-            </div>
-            ${
-              item.imageUrls.length > 1
-                ? `<div class="photo-count-pill">${item.imageUrls.length} photos</div>`
-                : ""
-            }
-            ${
-              isSold
-                ? `<div class="sold-overlay">SOLD ✌️</div>`
-                : ""
-            }
-          </div>
-          <div class="card-body">
-            <div class="card-title-row">
-              <div>
-                <div class="card-title">${escapeHtml(item.name)}</div>
+        const frontHtml = `
+          <div class="card-front">
+            <div class="card-image-wrapper">
+              <div class="carousel" data-active-index="0">
+                ${imagesHtml}
                 ${
-                  item.category
-                    ? `<div class="category">${escapeHtml(item.category)}</div>`
+                  item.imageUrls.length > 1
+                    ? `
+                  <button class="carousel-prev" data-no-flip="true">‹</button>
+                  <button class="carousel-next" data-no-flip="true">›</button>
+                `
+                    : ""
+                }
+              </div>
+              <div class="status-pill ${isSold ? "sold" : ""}">
+                <span class="dot"></span>
+                ${isSold ? "Sold" : "Available"}
+                ${
+                  !isSold && item.availableDate
+                    ? `<div class="status-available-date">${escapeHtml(item.availableDate)}</div>`
                     : ""
                 }
               </div>
               ${
-                item.price || item.originalPrice
-                  ? `<div class="price">
-                      ${
-                        item.originalPrice
-                          ? `<div class="original-price">${escapeHtml(item.originalPrice.toString())}</div>`
-                          : ""
-                      }
-                      ${
-                        item.price
-                          ? `<div class="current-price">${escapeHtml(item.price.toString())}</div>`
-                          : ""
-                      }
-                    </div>`
+                item.imageUrls.length > 1
+                  ? `<div class="photo-count-pill">${item.imageUrls.length} photos</div>`
+                  : ""
+              }
+              ${
+                isSold
+                  ? `<div class="sold-overlay">SOLD ✌️</div>`
                   : ""
               }
             </div>
-            ${
-              item.description
-                ? `<div class="desc">${escapeHtml(item.description)}</div>`
-                : ""
-            }
-            ${
-              item.link
-                ? `<a class="product-link" href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer">View product</a>`
-                : ""
-            }
-            <div class="meta-row">
-              ${
-                item.location
-                  ? `<div class="location">${escapeHtml(item.location)}</div>`
-                  : `<span></span>`
+            <div class="card-body">
+              <div class="card-title-row">
+                <div>
+                  <div class="card-title">${escapeHtml(item.name)}</div>
+                  ${
+                    item.category
+                      ? `<div class="category">${escapeHtml(item.category)}</div>`
+                      : ""
+                  }
+                </div>
+                ${
+                  item.price || item.originalPrice
+                    ? `<div class="price">
+                        ${
+                          item.originalPrice
+                            ? `<div class="original-price">${escapeHtml(item.originalPrice.toString())}</div>`
+                            : ""
+                        }
+                        ${
+                          item.price
+                            ? `<div class="current-price">${escapeHtml(item.price.toString())}</div>`
+                            : ""
+                        }
+                      </div>`
+                    : ""
+                }
+              </div>
+                ${
+                  item.description
+                    ? `<div class="desc">${escapeHtml(item.description)}</div>`
+                    : ""
               }
-              <button class="contact-btn" data-index="${idx}">
-                💬 I'm interested
-              </button>
+              ${
+                item.availableDate
+                  ? `<div class="availability">Available: ${escapeHtml(item.availableDate)}</div>`
+                  : ""
+              }
+              ${
+                item.link
+                  ? `<a class="product-link" data-no-flip="true" href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer">View product</a>`
+                  : ""
+              }
+              <div class="meta-row">
+                ${
+                  item.location
+                    ? `<div class="location">${escapeHtml(item.location)}</div>`
+                    : `<span></span>`
+                }
+                <button class="contact-btn" data-index="${idx}" data-no-flip="true">
+                  💬 I'm interested
+                </button>
+              </div>
+              <div class="flip-hint">Tap card to peek inside</div>
             </div>
           </div>
         `;
 
-        grid.appendChild(card);
-      });
+        const facts = [
+          item.price ? { label: "Deal price", value: item.price } : null,
+          item.originalPrice ? { label: "MRP", value: item.originalPrice } : null,
+          item.location ? { label: "Pickup", value: item.location } : null,
+          item.availableDate ? { label: "Available", value: item.availableDate } : null,
+          item.category ? { label: "Category", value: item.category } : null,
+          { label: "Status", value: isSold ? "Sold out" : "Ready to go" },
+        ].filter(Boolean);
 
-      document.querySelectorAll(".contact-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const idx = parseInt(btn.getAttribute("data-index"), 10);
-          const item = filteredItems[idx];
-          openWhatsAppForItem(item);
+        const factsHtml = facts
+          .map(
+            (fact) => `
+            <li>
+              <span>${escapeHtml(fact.label)}</span>
+              <strong>${escapeHtml(fact.value.toString())}</strong>
+            </li>
+          `
+          )
+          .join("");
+
+        const backDescription = item.description
+          ? escapeHtml(item.description)
+          : "Bundle a few items and I can slash prices even more. Tap WhatsApp to chat.";
+
+        const backHtml = `
+          <div class="card-back">
+            <div>
+              <div class="flip-badge">Deal snapshot</div>
+              <h3>${escapeHtml(item.name)}</h3>
+              <p class="back-desc">${backDescription}</p>
+            </div>
+            <ul class="back-facts">
+              ${
+                factsHtml ||
+                `<li>
+                  <span>Perk</span>
+                  <strong>Grab multiple items for an instant discount.</strong>
+                </li>`
+              }
+            </ul>
+            <div class="back-cta">
+              <button class="whatsapp-btn" data-no-flip="true" data-index="${idx}">
+                Chat on WhatsApp
+              </button>
+              <span class="flip-note" data-no-flip="true">Tap card to flip back ↺</span>
+            </div>
+          </div>
+        `;
+
+        card.innerHTML = frontHtml + backHtml;
+
+        card.addEventListener("click", (event) => {
+          if (event.target.closest("[data-no-flip]")) {
+            return;
+          }
+          grid.querySelectorAll(".card.flipped").forEach((activeCard) => {
+            if (activeCard !== card) {
+              activeCard.classList.remove("flipped");
+            }
+          });
+          card.classList.toggle("flipped");
         });
+
+        card.querySelectorAll(".contact-btn, .whatsapp-btn").forEach((btn) => {
+          btn.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const buttonIndex = parseInt(btn.getAttribute("data-index"), 10);
+            const targetItem = filteredItems[buttonIndex];
+            if (targetItem) {
+              openWhatsAppForItem(targetItem);
+            }
+          });
+        });
+
+        grid.appendChild(card);
       });
 
       initCarousels();
@@ -916,21 +1438,61 @@
           : "Showing everything";
 
       const searchInfo = "";
+      const categoryInfo =
+        currentCategory === CATEGORY_ALL_VALUE
+          ? ""
+          : ` · Category: ${categoryDisplayMap.get(currentCategory) || "Selected"}`;
 
-      statsFilterInfo.textContent = activeFilterLabel + searchInfo;
+      statsFilterInfo.textContent = activeFilterLabel + searchInfo + categoryInfo;
     }
 
     // === Interactions ===
-    document.querySelectorAll(".chip").forEach((chip) => {
+    document.querySelectorAll(".chip[data-filter]").forEach((chip) => {
       chip.addEventListener("click", () => {
         document
-          .querySelectorAll(".chip")
+          .querySelectorAll(".chip[data-filter]")
           .forEach((c) => c.classList.remove("active"));
         chip.classList.add("active");
         currentFilter = chip.getAttribute("data-filter");
         applyFilters();
       });
     });
+
+    const floatingCta = document.getElementById("floatingCta");
+    const floatingCtaBtn = document.getElementById("floatingCtaBtn");
+    const floatingCtaClose = document.getElementById("floatingCtaClose");
+    let ctaClosed = false;
+    let ctaShown = false;
+
+    const revealCta = () => {
+      if (!floatingCta || ctaShown || ctaClosed) return;
+      floatingCta.classList.remove("hidden");
+      ctaShown = true;
+    };
+
+    if (floatingCta) {
+      floatingCta.classList.add("hidden");
+      setTimeout(revealCta, 1200);
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 200) {
+          revealCta();
+        }
+      });
+    }
+
+    if (floatingCtaBtn) {
+      floatingCtaBtn.addEventListener("click", () => {
+        openWhatsAppWithText(CTA_MESSAGE);
+      });
+    }
+
+    if (floatingCtaClose) {
+      floatingCtaClose.addEventListener("click", (event) => {
+        event.stopPropagation();
+        floatingCta?.classList.add("hidden");
+        ctaClosed = true;
+      });
+    }
 
     function copyToClipboard(text) {
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -945,26 +1507,30 @@
       }
     }
 
-    function openWhatsAppForItem(item) {
-      const baseText =
-        "Hey! I'm interested in this item from your moving out sale:\n\n" +
-        `• ${item.name}` +
-        (item.price ? `\n• Price: ${item.price}` : "") +
-        (item.originalPrice ? `\n• Original price: ${item.originalPrice}` : "") +
-        (item.location ? `\n• Location: ${item.location}` : "") +
-        (item.link ? `\n• Link: ${item.link}` : "") +
-        "\n\nIs it still available?";
-      const encoded = encodeURIComponent(baseText);
+    function openWhatsAppWithText(message) {
+      const encoded = encodeURIComponent(message);
 
       if (WHATSAPP_NUMBER) {
         const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
         window.open(url, "_blank");
       } else {
-        copyToClipboard(baseText);
-        alert(
-          "Message copied! Paste it into WhatsApp and send it to me manually."
-        );
+        copyToClipboard(message);
+        alert("Message copied! Paste it into WhatsApp and send it to me manually.");
       }
+    }
+
+    function openWhatsAppForItem(item) {
+      const baseText =
+        "Hey! I'm interested in this item from your moving out sale:\n\n" +
+        `• ${item.name}` +
+        (item.price ? `\n• Deal price: ${item.price}` : "") +
+        (item.originalPrice ? `\n• Original price: ${item.originalPrice}` : "") +
+        (item.availableDate ? `\n• Available: ${item.availableDate}` : "") +
+        (item.location ? `\n• Location: ${item.location}` : "") +
+        (item.link ? `\n• Link: ${item.link}` : "") +
+        "\n\nIs it still available?";
+
+      openWhatsAppWithText(baseText);
     }
 
     // === Init ===
