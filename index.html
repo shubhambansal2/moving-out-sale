@@ -241,81 +241,17 @@
     }
 
     .card {
-      position: relative;
-      border-radius: var(--radius-lg);
-      opacity: 0;
-      transform: translateY(8px);
-      animation: fadeInUp 0.45s ease-out forwards;
-      cursor: pointer;
-      perspective: 1400px;
-      transition: transform 0.12s ease-out;
-      min-height: 360px;
-      display: block;
-    }
-
-    .card-front,
-    .card-back {
       background: var(--card-bg);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-soft);
-      transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1),
-        box-shadow 0.35s ease, opacity 0.35s ease;
-      transform-style: preserve-3d;
-      backface-visibility: hidden;
-      width: 100%;
-    }
-
-    .card-front {
-      display: flex;
-      flex-direction: column;
       overflow: hidden;
-      min-height: 100%;
-    }
-
-    .card-back {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 20% 20%, #7c4cf1, #5425a5 55%, #331362 100%);
-      color: #fff;
-      padding: 26px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      transform: rotateY(-180deg);
+      position: relative;
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
       opacity: 0;
-      pointer-events: none;
-    }
-
-    .card.card-live::after {
-      content: "";
-      position: absolute;
-      inset: -2px;
-      border-radius: calc(var(--radius-lg) + 2px);
-      background: linear-gradient(120deg, rgba(106, 63, 198, 0.4), rgba(255, 144, 104, 0.5));
-      z-index: -1;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .card.card-live:hover::after,
-    .card.card-live.flipped::after {
-      opacity: 1;
-    }
-
-    .card.card-sold::after {
-      display: none;
-    }
-
-    .card.flipped .card-front {
-      transform: rotateY(180deg);
-      opacity: 0;
-    }
-
-    .card.flipped .card-back {
-      transform: rotateY(0deg);
-      opacity: 1;
-      pointer-events: auto;
-      box-shadow: 0 20px 45px rgba(43, 21, 80, 0.45);
+      transform: translateY(8px);
+      animation: fadeInUp 0.45s ease-out forwards;
     }
 
     /* Stagger the cards a bit */
@@ -328,105 +264,7 @@
 
     .card:hover {
       transform: translateY(-4px) rotate(-0.2deg);
-    }
-
-    .card:hover .card-front {
       box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
-    }
-
-    .card.flipped .card-front,
-    .card.flipped:hover .card-front {
-      box-shadow: none;
-    }
-
-    .card-back h3 {
-      font-size: 1.15rem;
-    }
-
-    .flip-badge {
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .back-desc {
-      font-size: 0.9rem;
-      line-height: 1.5;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .back-facts {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      gap: 12px;
-    }
-
-    .back-facts li {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      font-size: 0.85rem;
-      border-bottom: 1px dashed rgba(255, 255, 255, 0.18);
-      padding-bottom: 8px;
-    }
-
-    .back-facts li:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .back-facts span {
-      color: rgba(255, 255, 255, 0.7);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-size: 0.68rem;
-    }
-
-    .back-facts strong {
-      color: #fff;
-      font-size: 0.95rem;
-    }
-
-    .back-cta {
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .whatsapp-btn {
-      border: none;
-      border-radius: 999px;
-      padding: 10px 18px;
-      background: #00d46a;
-      color: #102417;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: transform 0.12s ease-out, box-shadow 0.2s ease-out;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .whatsapp-btn::before {
-      content: "💬";
-    }
-
-    .whatsapp-btn:hover {
-      transform: translateY(-1px) scale(1.01);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-    }
-
-    .flip-note {
-      font-size: 0.74rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.55);
     }
 
     .card-image-wrapper {
@@ -661,23 +499,6 @@
       text-decoration: underline;
     }
 
-    .flip-hint {
-      margin-top: 10px;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .flip-hint::before {
-      content: "↺";
-      font-size: 0.9rem;
-      color: var(--accent);
-    }
-
     .meta-row {
       display: flex;
       justify-content: space-between;
@@ -754,10 +575,6 @@
         transform: translateY(-50%);
       }
 
-      .card-back {
-        padding: 22px;
-      }
-
     }
   </style>
 </head>
@@ -767,14 +584,14 @@
     <header>
       <h1>
         Moving Out Sale
-        <span class="badge">Moving abroad ✈️</span>
-      </h1>
+        <!-- <span class="badge">Moving abroad ✈️</span>    -->
+      </h1>  
       <p>
         I’m decluttering my life before moving abroad. Browse through the stuff below –
         everything is first-come-first-serve. Once something is marked
         <strong>Sold</strong>, it’s gone. 😄
       </p>
-
+ 
     </header>
 
     <div class="toolbar">
@@ -1038,7 +855,6 @@
         card.className = "card";
 
         const isSold = /sold/i.test(item.status);
-        card.classList.add(isSold ? "card-sold" : "card-live");
 
         const imagesHtml =
           item.imageUrls && item.imageUrls.length
@@ -1053,172 +869,105 @@
                 .join("")
             : `<div class="carousel-placeholder">No image</div>`;
 
-        const frontHtml = `
-          <div class="card-front">
-            <div class="card-image-wrapper">
-              <div class="carousel" data-active-index="0">
-                ${imagesHtml}
-                ${
-                  item.imageUrls.length > 1
-                    ? `
-                  <button class="carousel-prev" data-no-flip="true">‹</button>
-                  <button class="carousel-next" data-no-flip="true">›</button>
-                `
-                    : ""
-                }
-              </div>
-              <div class="status-pill ${isSold ? "sold" : ""}">
-                <span class="dot"></span>
-                ${isSold ? "Sold" : "Available"}
-                ${
-                  !isSold && item.availableDate
-                    ? `<div class="status-available-date">${escapeHtml(item.availableDate)}</div>`
-                    : ""
-                }
-              </div>
+        card.innerHTML = `
+          <div class="card-image-wrapper">
+            <div class="carousel" data-active-index="0">
+              ${imagesHtml}
               ${
-                item.imageUrls.length > 1
-                  ? `<div class="photo-count-pill">${item.imageUrls.length} photos</div>`
-                  : ""
-              }
-              ${
-                isSold
-                  ? `<div class="sold-overlay">SOLD ✌️</div>`
+                item.imageUrls && item.imageUrls.length > 1
+                  ? `
+                <button class="carousel-prev">‹</button>
+                <button class="carousel-next">›</button>
+              `
                   : ""
               }
             </div>
-            <div class="card-body">
-              <div class="card-title-row">
-                <div>
-                  <div class="card-title">${escapeHtml(item.name)}</div>
-                  ${
-                    item.category
-                      ? `<div class="category">${escapeHtml(item.category)}</div>`
-                      : ""
-                  }
-                </div>
-                ${
-                  item.price || item.originalPrice
-                    ? `<div class="price">
-                        ${
-                          item.originalPrice
-                            ? `<div class="original-price">${escapeHtml(item.originalPrice.toString())}</div>`
-                            : ""
-                        }
-                        ${
-                          item.price
-                            ? `<div class="current-price">${escapeHtml(item.price.toString())}</div>`
-                            : ""
-                        }
-                      </div>`
-                    : ""
-                }
-              </div>
-                ${
-                  item.description
-                    ? `<div class="desc">${escapeHtml(item.description)}</div>`
-                    : ""
-              }
+            <div class="status-pill ${isSold ? "sold" : ""}">
+              <span class="dot"></span>
+              ${isSold ? "Sold" : "Available"}
               ${
-                item.availableDate
-                  ? `<div class="availability">Available: ${escapeHtml(item.availableDate)}</div>`
+                !isSold && item.availableDate
+                  ? `<div class="status-available-date">${escapeHtml(item.availableDate)}</div>`
                   : ""
               }
-              ${
-                item.link
-                  ? `<a class="product-link" data-no-flip="true" href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer">View product</a>`
-                  : ""
-              }
-              <div class="meta-row">
-                ${
-                  item.location
-                    ? `<div class="location">${escapeHtml(item.location)}</div>`
-                    : `<span></span>`
-                }
-                <button class="contact-btn" data-index="${idx}" data-no-flip="true">
-                  💬 I'm interested
-                </button>
-              </div>
-              <div class="flip-hint">Tap card to peek inside</div>
             </div>
+            ${
+              item.imageUrls && item.imageUrls.length > 1
+                ? `<div class="photo-count-pill">${item.imageUrls.length} photos</div>`
+                : ""
+            }
+            ${
+              isSold
+                ? `<div class="sold-overlay">SOLD ✌️</div>`
+                : ""
+            }
           </div>
-        `;
-
-        const facts = [
-          item.price ? { label: "Deal price", value: item.price } : null,
-          item.originalPrice ? { label: "MRP", value: item.originalPrice } : null,
-          item.location ? { label: "Pickup", value: item.location } : null,
-          item.availableDate ? { label: "Available", value: item.availableDate } : null,
-          item.category ? { label: "Category", value: item.category } : null,
-          { label: "Status", value: isSold ? "Sold out" : "Ready to go" },
-        ].filter(Boolean);
-
-        const factsHtml = facts
-          .map(
-            (fact) => `
-            <li>
-              <span>${escapeHtml(fact.label)}</span>
-              <strong>${escapeHtml(fact.value.toString())}</strong>
-            </li>
-          `
-          )
-          .join("");
-
-        const backDescription = item.description
-          ? escapeHtml(item.description)
-          : "Bundle a few items and I can slash prices even more. Tap WhatsApp to chat.";
-
-        const backHtml = `
-          <div class="card-back">
-            <div>
-              <div class="flip-badge">Deal snapshot</div>
-              <h3>${escapeHtml(item.name)}</h3>
-              <p class="back-desc">${backDescription}</p>
-            </div>
-            <ul class="back-facts">
+          <div class="card-body">
+            <div class="card-title-row">
+              <div>
+                <div class="card-title">${escapeHtml(item.name)}</div>
+                ${
+                  item.category
+                    ? `<div class="category">${escapeHtml(item.category)}</div>`
+                    : ""
+                }
+              </div>
               ${
-                factsHtml ||
-                `<li>
-                  <span>Perk</span>
-                  <strong>Grab multiple items for an instant discount.</strong>
-                </li>`
+                item.price || item.originalPrice
+                  ? `<div class="price">
+                      ${
+                        item.originalPrice
+                          ? `<div class="original-price">${escapeHtml(item.originalPrice.toString())}</div>`
+                          : ""
+                      }
+                      ${
+                        item.price
+                          ? `<div class="current-price">${escapeHtml(item.price.toString())}</div>`
+                          : ""
+                      }
+                    </div>`
+                  : ""
               }
-            </ul>
-            <div class="back-cta">
-              <button class="whatsapp-btn" data-no-flip="true" data-index="${idx}">
-                Chat on WhatsApp
+            </div>
+            ${
+              item.description
+                ? `<div class="desc">${escapeHtml(item.description)}</div>`
+                : ""
+            }
+            ${
+              item.availableDate
+                ? `<div class="availability">Available: ${escapeHtml(item.availableDate)}</div>`
+                : ""
+            }
+            ${
+              item.link
+                ? `<a class="product-link" href="${escapeHtml(item.link)}" target="_blank" rel="noopener noreferrer">View product</a>`
+                : ""
+            }
+            <div class="meta-row">
+              ${
+                item.location
+                  ? `<div class="location">${escapeHtml(item.location)}</div>`
+                  : `<span></span>`
+              }
+              <button class="contact-btn" data-index="${idx}">
+                💬 I'm interested
               </button>
-              <span class="flip-note" data-no-flip="true">Tap card to flip back ↺</span>
             </div>
           </div>
         `;
-
-        card.innerHTML = frontHtml + backHtml;
-
-        card.addEventListener("click", (event) => {
-          if (event.target.closest("[data-no-flip]")) {
-            return;
-          }
-          grid.querySelectorAll(".card.flipped").forEach((activeCard) => {
-            if (activeCard !== card) {
-              activeCard.classList.remove("flipped");
-            }
-          });
-          card.classList.toggle("flipped");
-        });
-
-        card.querySelectorAll(".contact-btn, .whatsapp-btn").forEach((btn) => {
-          btn.addEventListener("click", (event) => {
-            event.stopPropagation();
-            const buttonIndex = parseInt(btn.getAttribute("data-index"), 10);
-            const targetItem = filteredItems[buttonIndex];
-            if (targetItem) {
-              openWhatsAppForItem(targetItem);
-            }
-          });
-        });
 
         grid.appendChild(card);
+      });
+
+      document.querySelectorAll(".contact-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const idx = parseInt(btn.getAttribute("data-index"), 10);
+          const item = filteredItems[idx];
+          if (item) {
+            openWhatsAppForItem(item);
+          }
+        });
       });
 
       initCarousels();
@@ -1338,7 +1087,7 @@
       const baseText =
         "Hey! I'm interested in this item from your moving out sale:\n\n" +
         `• ${item.name}` +
-        (item.price ? `\n• Deal price: ${item.price}` : "") +
+        (item.price ? `\n• Price: ${item.price}` : "") +
         (item.originalPrice ? `\n• Original price: ${item.originalPrice}` : "") +
         (item.availableDate ? `\n• Available: ${item.availableDate}` : "") +
         (item.location ? `\n• Location: ${item.location}` : "") +
